@@ -1,5 +1,5 @@
 import { CometChat } from "@cometchat-pro/chat";
-
+ //############################################################//
 const loginCometChatUser = async (uid) => {
     try {
         const user = await CometChat.login(
@@ -12,6 +12,7 @@ const loginCometChatUser = async (uid) => {
     }
 }
 
+//############################################################//
 const logoutCometChatUser = async () => {
     try {
         await CometChat.logout();
@@ -21,6 +22,7 @@ const logoutCometChatUser = async () => {
     }
 };
 
+//############################################################//
 const registerCometChatUser = async (uid, name) => {
     var user = new CometChat.User(uid);
     user.setName(name);
@@ -35,6 +37,7 @@ const registerCometChatUser = async (uid, name) => {
     }
 };
 
+//############################################################//
 const addCometChatGroup = async (GUID, name, icon, participants) => {
     let membersList = participants.map(
         (participant) =>

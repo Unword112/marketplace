@@ -1,24 +1,63 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react';
+
+import firebase from 'firebase';
+import 'firebase/auth';
+import { Route, BrowserRouter, Switch, Redirect } from 'react-router-dom';
+
+import IndexPage from './pages';
+import CategoryPage from './pages/category';
+import InboxPage from './pages/inbox';
+import LoginPage from './pages/login';
+import LogoutPage  from './pages/logout';
+import NewProductPage  from './pages/newProduct';
+import ProductPage  from './pages/product';
+import RegisterPage  from './pages/register';
 
 function App() {
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if(user){
+        localStorage.setItem('userUID', user.uid);
+      } else {
+        localStorage.removeItem('userUID');
+        }
+      });
+  }, [])
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path='/'>
+            <IndexPage />
+          </Route>
+          <Route exact path='/category/:name'>
+            <CategoryPage />
+          </Route>
+          <Route exact path='inbox'>
+            <InboxPage />
+          </Route>
+          <Route exact path='/product/new'>
+            <NewProductPage />
+          </Route>
+          <Route exact path='/product/:id'>
+            <ProductPage />
+          </Route>
+          <Route exact path='/login'>
+            <LoginPage />
+          </Route>
+          <Route exact path='/logout'>
+            <LogoutPage />
+          </Route>
+          <Route exact path='/register'>
+            <RegisterPage />
+          </Route>
+          <Route exact path='*'>
+            <IndexPage />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </>
   );
 }
 
