@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 
 import firebase from 'firebase';
 import 'firebase/auth';
-import { Route, BrowserRouter, Switch, Redirect } from 'react-router-dom';
+import { Route, BrowserRouter, Routes , Navigate } from 'react-router-dom';
 
-import IndexPage from './pages';
+import IndexPage from './index';
 import CategoryPage from './pages/category';
 import InboxPage from './pages/inbox';
 import LoginPage from './pages/login';
@@ -12,6 +12,7 @@ import LogoutPage  from './pages/logout';
 import NewProductPage  from './pages/newProduct';
 import ProductPage  from './pages/product';
 import RegisterPage  from './pages/register';
+import { render } from 'react-dom';
 
 function App() {
   useEffect(() => {
@@ -27,19 +28,19 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Switch>
+        <Routes>
           <Route exact path='/'>
             <IndexPage />
           </Route>
           <Route exact path='/category/:name'>
             <CategoryPage />
           </Route>
-          <Route exact path='inbox'>
+          <PrivateRoute exact path='inbox'>
             <InboxPage />
-          </Route>
-          <Route exact path='/product/new'>
+          </PrivateRoute>
+          <PrivateRoute exact path='/product/new'>
             <NewProductPage />
-          </Route>
+          </PrivateRoute>
           <Route exact path='/product/:id'>
             <ProductPage />
           </Route>
@@ -55,10 +56,30 @@ function App() {
           <Route exact path='*'>
             <IndexPage />
           </Route>
-        </Switch>
+        </Routes>
       </BrowserRouter>
     </>
   );
+}
+
+function PrivateRoute({ children , rest}){
+  render(
+    <Route
+      {...rest}
+      render={({ location }) =>
+        localStorage.getItem('userUID') ? (
+          children
+        ) : (
+          <Navigate
+            to={{
+              pathname: '/login',
+              state: { from: location },
+            }}
+          />
+        )
+      }
+    />
+  )
 }
 
 export default App;

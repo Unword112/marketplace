@@ -1,16 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { firebaseConfig } from './firebase';
-import { FirebaseAuthProvider } from 'firebase/auth';
-import { FirestoreProvider } from 'firebase/firestore';
-import firebase from 'firebase';
-import { CometChat } from '@cometchat-pro/chat';
-
-import './styles/index.css';
-import './tailwind.config.js';
-
-import App from './App';
-
+    import ReactDOM from 'react-dom';
+    import { firebaseConfig } from './firebase';
+    import { FirebaseAuthProvider } from '@react-firebase/auth';
+    import { FirestoreProvider } from '@react-firebase/firestore';
+    import firebase from 'firebase';
+    import { CometChat } from '@cometchat-pro/chat';
+    import './styles/index.css';
+    import './styles/tailwind.css';
+    import App from './App';
 const appSetting = new CometChat.AppSettingsBuilder()
   .subscribePresenceForAllUsers()
   .setRegion(process.env.REACT_APP_COMETCHAT_REGION)
@@ -33,6 +30,8 @@ CometChat.init(process.env.REACT_APP_COMETCHAT_APP_ID, appSetting).then(
     console.log('Initialization failed with error: ', error);
   }
 )
+
+export default appSetting
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
