@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from 'react';
 
-import { Link , useHistory } from 'react-router-dom';
+import { Link , useNavigate } from 'react-router-dom';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { loginCometChatUser } from '../cometchat';
@@ -25,7 +25,7 @@ export default function LoginPage() {
     const [ state, dispatch ] = useReducer(reducer, initialState);
     const [ error, setError ] = useState('');
 
-    let history = useHistory();
+    let navigate = useNavigate();
     const handleOnChange = (evt) => {
         const { target } = evt;
         dispatch({
@@ -41,7 +41,7 @@ export default function LoginPage() {
             .signInWithEmailAndPassword(state.email, state.password)
             .then((doc) => {
                 loginCometChatUser(doc.user.uid);
-                history.push('/');
+                navigate('/');
             })
             .catch((err) => {
                 setError(err.message);
@@ -51,6 +51,7 @@ export default function LoginPage() {
     return (
         <div>
             <div className='flex flex-col justify-center items-center mx-auto px-2 py-2 border-gray' >
+            <div className='inline-flex'>
                 <Link to='/'>
                     <img src='/logo-black.png' className='w-24' alt='Logo'></img>
                 </Link>
@@ -65,7 +66,46 @@ export default function LoginPage() {
             <label htmlFor='email' className='font-bold text-base md:m1-1'>
                 Email
             </label>
+            <input 
+                id='email'
+                name='email'
+                type='email'
+                autoComplete='email'
+                required
+                onChange={handleOnChange}
+                value={state.email}
+                className='appearance-none rounded-sm relative block w-full p-1 border border-gray'
+                placeholder='Email'
+            />
+            <label htmlFor='password' className='font-bold text-base md:m1-1'>
+                Password
+            </label>
+            <input 
+                id='password'
+                name='password'
+                type='email'
+                autoComplete='email'
+                required
+                onChange={handleOnChange}
+                value={state.email}
+                className='appearance-none rounded-sm relative block w-full p-1 border border-gray'
+                placeholder='Password'
+            />
+            <button type='submit' className='bg-gradient-to-t from-yellow-300 to-yellow-100 text-base p-1 w-full rounded-sm my-3 border border-gray-300'>
+                Continue
+            </button>
+            <p className='text-base tracking-none'>
+                By continiung, you agree to Amazon's{''}
+                <a href='#' className='text-blue-500'>and{' '}</a>
+                <a href='#' className='text-blue-500'>Privacy Notice</a>
+                .
+            </p>
+            <p className='text-center text-base text-gray-500'>New to Amazon?</p>
+                <button type='submit' className='w-full bg-gradient-to-t from-gray-200 to-white text-base p-1 rounded-sm my-3 border border-gray-500'>
+                    <Link to='/register'>Create your Amazon account</Link>
+                </button>
             </form>
         </div>
+    </div>
     )
 }
